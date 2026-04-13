@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PrintCase - Self-Service Handyhullen-Druckmodul. Automatisierte Produktion individueller Handyhullen direkt vor Ort.">
+  <title>PrintCase - Mehr Erlebnis fur Ihren Standort</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-alt: #0f0f0f;
+      --surface: #141414;
+      --surface-elevated: #1a1a1a;
+      --accent: #22c55e;
+      --accent-hover: #16a34a;
+      --accent-glow: rgba(34, 197, 94, 0.15);
+      --accent-glow-subtle: rgba(34, 197, 94, 0.06);
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --border: #262626;
+      --border-light: #2a2a2a;
+      --radius: 12px;
+      --max-w: 1200px;
+      --section-py: 120px;
+      --section-py-mobile: 72px;
+      --font-display: 'Bebas Neue', Impact, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .fade-in { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .hero-orb { animation: none !important; }
+      .overlay-panel { transition: none !important; }
+      .overlay-backdrop { transition: none !important; }
+      .scroll-top-btn { transition: none !important; }
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Subtle noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    body.overlay-open {
+      overflow: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* --- SECTION DIVIDERS --- */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border-light), transparent);
+      margin: 0;
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .section-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .section-body {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 680px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.25);
+    }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 12px 28px;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow-subtle);
+    }
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- NAVBAR --- */
+    .navbar {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: var(--max-w);
+      z-index: 1000;
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0 24px;
+      transition: background 0.3s ease;
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .navbar-logo svg {
+      height: 30px;
+      width: auto;
+      display: block;
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .navbar-links a {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: color 0.2s ease;
+    }
+
+    .navbar-links a:hover,
+    .navbar-links a:focus-visible { color: var(--text); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 1px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(10, 10, 10, 0.97);
+      backdrop-filter: blur(20px);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s ease;
+    }
+
+    .mobile-menu a:hover { color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .navbar-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* --- HERO --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 100px;
+      padding-bottom: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Dot grid pattern */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(circle, var(--text-muted) 0.5px, transparent 0.5px);
+      background-size: 32px 32px;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    /* Geometric grid lines */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 800px; height: 800px;
+      transform: translate(-50%, -50%);
+      background:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.04;
+      pointer-events: none;
+      border-radius: 50%;
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+    }
+
+    .hero-orb {
+      position: absolute;
+      top: 50%;
+      left: 35%;
+      width: 600px;
+      height: 600px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.12) 0%, rgba(34, 197, 94, 0.04) 40%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: orbPulse 6s ease-in-out infinite;
+      filter: blur(40px);
+    }
+
+    @keyframes orbPulse {
+      0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 50px;
+      padding: 8px 20px;
+      margin-bottom: 32px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      color: var(--text);
+      margin-bottom: 28px;
+      max-width: 900px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-divider {
+      margin-top: 80px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      opacity: 0.3;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* --- KONZEPT --- */
+    .konzept {
+      background: var(--bg-alt);
+      padding: var(--section-py) 0;
+      position: relative;
+    }
+
+    .konzept-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 48px;
+      align-items: start;
+    }
+
+    .konzept-text p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .konzept-visual {
+      background: linear-gradient(135deg, var(--surface) 0%, rgba(34, 197, 94, 0.03) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      min-height: 360px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .konzept-visual::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; right: -1px; bottom: -1px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), transparent 50%);
+      pointer-events: none;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: xor;
+      padding: 1px;
+    }
+
+    /* Kiosk SVG illustration */
+    .kiosk-illustration {
+      position: relative;
+      width: 160px;
+      height: 220px;
+    }
+
+    .kiosk-illustration svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.15));
+    }
+
+    .konzept-flow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--surface);
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .flow-arrow {
+      color: var(--border);
+      font-size: 0.7rem;
+    }
+
+    .flow-arrow svg {
+      width: 14px; height: 14px;
+      stroke: var(--border-light);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .konzept-visual-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .konzept { padding: var(--section-py-mobile) 0; }
+      .konzept-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    /* --- VORTEILE --- */
+    .vorteile {
+      padding: var(--section-py) 0;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background watermark */
+    .vorteile-watermark {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-display);
+      font-size: 28rem;
+      color: var(--text);
+      opacity: 0.015;
+      pointer-events: none;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .vorteile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .benefit-card {
+      background: linear-gradient(135deg, var(--surface) 0%, rgba(20, 20, 20, 0.8) 100%);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .benefit-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.04), transparent 60%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .benefit-card:hover {
+      border-color: rgba(34, 197, 94, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(34, 197, 94, 0.06);
+    }
+
+    .benefit-card:hover::after {
+      opacity: 1;
+    }
+
+    .benefit-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .benefit-number {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .benefit-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(34, 197, 94, 0.08);
+      border-radius: 10px;
+      border: 1px solid rgba(34, 197, 94, 0.12);
+    }
+
+    .benefit-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .benefit-card h3 {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .benefit-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .vorteile { padding: var(--section-py-mobile) 0; }
+      .vorteile-grid { grid-template-columns: 1fr; }
+      .vorteile-watermark { font-size: 16rem; right: -20px; }
+    }
+
+    /* --- PROZESS --- */
+    .prozess {
+      padding: var(--section-py) 0;
+      background: var(--bg-alt);
+      position: relative;
+    }
+
+    .prozess-header {
+      margin-bottom: 56px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .step {
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .step-card-bg {
+      background: linear-gradient(180deg, rgba(20, 20, 20, 0.5) 0%, transparent 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 16px 28px;
+      margin-top: 36px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .step:hover .step-card-bg {
+      border-color: rgba(34, 197, 94, 0.2);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .step-line {
+      position: absolute;
+      top: 24px;
+      left: calc(50% + 30px);
+      right: calc(-50% + 30px);
+      height: 2px;
+      background: linear-gradient(to right, var(--accent), rgba(34, 197, 94, 0.2));
+      opacity: 0.5;
+    }
+
+    .step:last-child .step-line { display: none; }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--accent);
+      position: relative;
+      z-index: 1;
+      background: var(--bg-alt);
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .step:hover .step-number {
+      background: var(--accent);
+      color: var(--bg);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    }
+
+    .step-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .step-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--text-muted);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .step h3 {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .prozess { padding: var(--section-py-mobile) 0; }
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .step { text-align: left; padding: 0; padding-left: 72px; }
+      .step-card-bg {
+        margin-top: 0;
+        padding: 20px 16px;
+      }
+      .step-number {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .step-line {
+        top: 48px;
+        left: 24px;
+        right: auto;
+        width: 2px;
+        height: calc(100% + 48px);
+        bottom: 0;
+        background: linear-gradient(to bottom, var(--accent), rgba(34, 197, 94, 0.1));
+      }
+      .step:last-child .step-line { display: none; }
+      .step-icon { margin: 0 0 12px; justify-content: flex-start; }
+    }
+
+    /* --- TECHNIK --- */
+    .technik {
+      padding: var(--section-py) 0;
+      background: var(--bg);
+      position: relative;
+    }
+
+    .technik-header {
+      margin-bottom: 48px;
+    }
+
+    .technik-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .accordion {
+      margin-bottom: 0;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid var(--border);
+      border-left: 3px solid transparent;
+      padding-left: 0;
+      transition: border-color 0.3s ease, padding-left 0.3s ease;
+    }
+
+    .accordion-item.open {
+      border-left-color: var(--accent);
+      padding-left: 16px;
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text);
+      text-align: left;
+      transition: color 0.2s ease;
+    }
+
+    .accordion-trigger:hover { color: var(--accent); }
+    .accordion-trigger:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .accordion-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(45deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+
+    .accordion-content-inner {
+      padding-bottom: 24px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 720px;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .spec-item {
+      background: linear-gradient(135deg, var(--surface) 0%, rgba(20, 20, 20, 0.8) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: border-color 0.3s ease;
+    }
+
+    .spec-item:hover {
+      border-color: rgba(34, 197, 94, 0.2);
+    }
+
+    .spec-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(34, 197, 94, 0.06);
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .spec-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.7;
+    }
+
+    .spec-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .spec-value {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .technik { padding: var(--section-py-mobile) 0; }
+      .technik-content { grid-template-columns: 1fr; }
+      .specs-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .specs-grid { grid-template-columns: 1fr; }
+    }
+
+    /* --- KONTAKT --- */
+    .kontakt {
+      padding: var(--section-py) 0;
+      background: linear-gradient(180deg, var(--bg-alt) 0%, #0c0c0c 50%, var(--bg-alt) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kontakt::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .kontakt-inner {
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .kontakt-info {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+    }
+
+    .kontakt-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .kontakt-row svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    .kontakt-row a,
+    .kontakt-row span {
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .kontakt-row a:hover { color: var(--accent); }
+
+    .kontakt-actions {
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .kontakt .btn-primary {
+      padding: 16px 40px;
+      font-size: 1rem;
+    }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .download-link:hover { color: var(--text); }
+
+    .download-link svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media (max-width: 768px) {
+      .kontakt { padding: var(--section-py-mobile) 0; }
+    }
+
+    /* --- FOOTER --- */
+    .site-footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-top: 16px;
+      max-width: 280px;
+    }
+
+    .footer-nav-title {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-nav-list a {
+      font-size: 0.85rem;
+      color: #777;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .footer-nav-list a:hover { color: var(--text); }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo svg {
+      height: 22px;
+      width: auto;
+      display: block;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .footer-links a, .footer-links button {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+    }
+
+    .footer-links a:hover, .footer-links button:hover { color: var(--text); }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    @media (max-width: 600px) {
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* --- OVERLAY PANELS (Impressum/Datenschutz) --- */
+    .overlay-backdrop {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .overlay-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .overlay-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 640px;
+      height: 100%;
+      background: var(--bg);
+      z-index: 2001;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .overlay-panel.active {
+      transform: translateX(0);
+    }
+
+    .overlay-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      flex-shrink: 0;
+      min-height: 68px;
+    }
+
+    .overlay-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      color: var(--text);
+      transition: background 0.2s ease, border-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .overlay-close:hover {
+      background: var(--surface-elevated);
+      border-color: var(--text-muted);
+    }
+
+    .overlay-close:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .overlay-close svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .overlay-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.03em;
+      color: var(--text);
+    }
+
+    .overlay-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 32px 60px;
+    }
+
+    .overlay-body::-webkit-scrollbar { width: 4px; }
+    .overlay-body::-webkit-scrollbar-track { background: transparent; }
+    .overlay-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .overlay-body h3 {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 28px;
+      margin-bottom: 10px;
+    }
+
+    .overlay-body p,
+    .overlay-body ul {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+      max-width: 720px;
+    }
+
+    .overlay-body ul {
+      padding-left: 20px;
+    }
+
+    .overlay-body li {
+      margin-bottom: 4px;
+    }
+
+    .overlay-body a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .overlay-body a:hover { text-decoration: underline; }
+
+    .placeholder-marker {
+      color: #ef4444;
+      font-style: italic;
+    }
+
+    @media (max-width: 640px) {
+      .overlay-panel { max-width: 100%; }
+    }
+
+    /* --- SCROLL TO TOP --- */
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      z-index: 1500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .scroll-top-btn.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .scroll-top-btn:hover {
+      background: var(--surface-elevated);
+      border-color: var(--accent);
+    }
+
+    .scroll-top-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .scroll-top-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* --- FOCUS --- */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="navbar-logo" aria-label="PrintCase Home">
+        <svg viewBox="0 0 315.86 80" height="80" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="44" height="80" rx="9" fill="#22c55e"/>
+          <rect x="11" y="8" width="24" height="8" rx="4" fill="#f4f4f6" opacity="0.72"/>
+          <text style="font-family:'Bebas Neue',Impact,'Arial Black',sans-serif;font-size:82px" x="53.46" y="69.68"><tspan fill="#f4f4f6">PRINT</tspan><tspan fill="#f4f4f6">CASE</tspan></text>
+        </svg>
+      </a>
+      <nav>
+        <ul class="navbar-links">
+          <li><a href="#konzept">Konzept</a></li>
+          <li><a href="#vorteile">Vorteile</a></li>
+          <li><a href="#prozess">Prozess</a></li>
+          <li><a href="#technik">Technik</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#konzept" class="mobile-link">Konzept</a>
+    <a href="#vorteile" class="mobile-link">Vorteile</a>
+    <a href="#prozess" class="mobile-link">Prozess</a>
+    <a href="#technik" class="mobile-link">Technik</a>
+    <a href="#kontakt" class="mobile-link">Kontakt</a>
+  </div>
+
+  <!-- OVERLAY BACKDROP -->
+  <div class="overlay-backdrop" id="overlayBackdrop"></div>
+
+  <!-- IMPRESSUM OVERLAY -->
+  <div class="overlay-panel" id="impressumOverlay" role="dialog" aria-modal="true" aria-label="Impressum">
+    <div class="overlay-header">
+      <button class="overlay-close" id="impressumClose" aria-label="Schliessen">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <span class="overlay-title">Impressum</span>
+    </div>
+    <div class="overlay-body">
+      <p><strong>Jora Daweschyan</strong><br>
+      Innweg 43<br>
+      6170 Zirl, &Ouml;sterreich</p>
+      <p>Telefon: <a href="tel:+436605376878">+43 0660 5376878</a><br>
+      E-Mail: <a href="mailto:jora.daw@gmail.com">jora.daw@gmail.com</a></p>
+      <p>Rechtsform: <span class="placeholder-marker">[In Gr&uuml;ndung &ndash; bitte erg&auml;nzen]</span><br>
+      Unternehmensgegenstand: <span class="placeholder-marker">[Bitte erg&auml;nzen]</span><br>
+      UID-Nummer: <span class="placeholder-marker">[Bitte erg&auml;nzen, falls vorhanden]</span><br>
+      Aufsichtsbeh&ouml;rde: <span class="placeholder-marker">[Bitte erg&auml;nzen]</span></p>
+    </div>
+  </div>
+
+  <!-- DATENSCHUTZ OVERLAY -->
+  <div class="overlay-panel" id="datenschutzOverlay" role="dialog" aria-modal="true" aria-label="Datenschutz">
+    <div class="overlay-header">
+      <button class="overlay-close" id="datenschutzClose" aria-label="Schliessen">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <span class="overlay-title">Datenschutzerkl&auml;rung</span>
+    </div>
+    <div class="overlay-body">
+      <h3>1. Verantwortlicher</h3>
+      <p>Jora Daweschyan<br>
+      Innweg 43, 6170 Zirl, &Ouml;sterreich<br>
+      E-Mail: <a href="mailto:jora.daw@gmail.com">jora.daw@gmail.com</a><br>
+      Telefon: <a href="tel:+436605376878">+43 0660 5376878</a></p>
+
+      <h3>2. Erhebung und Speicherung personenbezogener Daten</h3>
+      <p>Beim Besuch dieser Website werden durch den Hosting-Anbieter automatisch Informationen in sogenannten Server-Logfiles gespeichert, die Ihr Browser automatisch &uuml;bermittelt. Dies sind:</p>
+      <ul>
+        <li>Browsertyp und Browserversion</li>
+        <li>Verwendetes Betriebssystem</li>
+        <li>Referrer URL</li>
+        <li>Hostname des zugreifenden Rechners</li>
+        <li>Uhrzeit der Serveranfrage</li>
+        <li>IP-Adresse</li>
+      </ul>
+      <p>Diese Daten sind nicht bestimmten Personen zuordenbar. Eine Zusammenf&uuml;hrung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Die Erfassung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.</p>
+
+      <h3>3. Hosting</h3>
+      <p>Diese Website wird gehostet bei: <span class="placeholder-marker">[Railway &ndash; bitte Hosting-Anbieter-Daten erg&auml;nzen]</span></p>
+
+      <h3>4. Kontaktaufnahme</h3>
+      <p>Wenn Sie uns per E-Mail oder Telefon kontaktieren, werden Ihre Angaben zur Bearbeitung der Kontaktanfrage und f&uuml;r den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO.</p>
+
+      <h3>5. Cookies</h3>
+      <p>Diese Website verwendet keine Cookies.</p>
+
+      <h3>6. Analyse- und Tracking-Tools</h3>
+      <p>Auf dieser Website werden derzeit keine Analyse- oder Tracking-Tools eingesetzt.</p>
+
+      <h3>7. Ihre Rechte</h3>
+      <p>Sie haben gem&auml;&szlig; DSGVO folgende Rechte:</p>
+      <ul>
+        <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
+        <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
+        <li>Recht auf L&ouml;schung (Art. 17 DSGVO)</li>
+        <li>Recht auf Einschr&auml;nkung der Verarbeitung (Art. 18 DSGVO)</li>
+        <li>Recht auf Daten&uuml;bertragbarkeit (Art. 20 DSGVO)</li>
+        <li>Widerspruchsrecht (Art. 21 DSGVO)</li>
+      </ul>
+      <p>Zur Aus&uuml;bung Ihrer Rechte k&ouml;nnen Sie sich jederzeit an uns wenden unter: <a href="mailto:jora.daw@gmail.com">jora.daw@gmail.com</a></p>
+
+      <h3>8. Beschwerderecht</h3>
+      <p>Sie haben das Recht, sich bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde zu beschweren. Die zust&auml;ndige Aufsichtsbeh&ouml;rde in Datenschutzfragen ist die &Ouml;sterreichische Datenschutzbeh&ouml;rde (DSB), Barichgasse 40-42, 1030 Wien.</p>
+    </div>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-orb"></div>
+      <div class="container">
+        <div class="hero-badge fade-in">
+          <span class="hero-badge-dot"></span>
+          Jetzt verf&uuml;gbar f&uuml;r Standortpartner
+        </div>
+        <p class="hero-label fade-in">SELF-SERVICE &middot; HANDYH&Uuml;LLEN-DRUCKMODUL</p>
+        <h1 class="hero-headline fade-in">MEHR ERLEBNIS<br>F&Uuml;R IHREN STANDORT.</h1>
+        <p class="hero-sub fade-in">Ein automatisiertes Modul f&uuml;r individuelle Handyh&uuml;llen &ndash; direkt vor Ort produziert, auf minimaler Fl&auml;che, ohne Personalaufwand.</p>
+        <div class="hero-actions fade-in">
+          <a href="#konzept" class="btn-primary">Mehr erfahren
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M7 7h9.2v9.2"/></svg>
+          </a>
+        </div>
+        <div class="hero-divider fade-in"></div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- KONZEPT -->
+    <section class="konzept" id="konzept">
+      <div class="container">
+        <p class="section-label fade-in">DAS KONZEPT</p>
+        <h2 class="section-headline fade-in">Digitale Gestaltung. Sofortige Produktion.</h2>
+        <div class="konzept-grid">
+          <div class="konzept-text fade-in">
+            <p>Das Modul verbindet digitale Gestaltung mit sofortiger Produktion und schafft ein Einkaufserlebnis, das Besucher aktiv einbindet &ndash; ohne den laufenden Betrieb zu ber&uuml;hren.</p>
+            <p>PrintCase wird als eigenst&auml;ndiges Betreibermodell betrieben. Die Maschine wird von uns gestellt und betrieben. F&uuml;r den Standortpartner entsteht kein Investitionsaufwand und kein Personalbedarf.</p>
+          </div>
+          <div class="konzept-visual fade-in">
+            <div class="kiosk-illustration">
+              <svg viewBox="0 0 160 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Base/Stand -->
+                <rect x="30" y="180" width="100" height="30" rx="4" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+                <!-- Main body -->
+                <rect x="20" y="30" width="120" height="155" rx="8" fill="#141414" stroke="#333" stroke-width="1"/>
+                <!-- Screen area -->
+                <rect x="32" y="44" width="96" height="72" rx="4" fill="#0f0f0f" stroke="#22c55e" stroke-width="0.5" opacity="0.8"/>
+                <!-- Screen glow -->
+                <rect x="34" y="46" width="92" height="68" rx="3" fill="url(#screenGlow)" opacity="0.3"/>
+                <!-- Screen content lines -->
+                <rect x="44" y="58" width="40" height="3" rx="1.5" fill="#22c55e" opacity="0.4"/>
+                <rect x="44" y="66" width="56" height="2" rx="1" fill="#a1a1aa" opacity="0.15"/>
+                <rect x="44" y="72" width="48" height="2" rx="1" fill="#a1a1aa" opacity="0.1"/>
+                <!-- Phone icon on screen -->
+                <rect x="100" y="56" width="18" height="28" rx="3" fill="none" stroke="#22c55e" stroke-width="0.7" opacity="0.5"/>
+                <!-- Output slot -->
+                <rect x="48" y="130" width="64" height="6" rx="3" fill="#0a0a0a" stroke="#333" stroke-width="0.5"/>
+                <!-- QR indicator -->
+                <rect x="60" y="148" width="16" height="16" rx="2" fill="none" stroke="#22c55e" stroke-width="0.7" opacity="0.4"/>
+                <rect x="63" y="151" width="4" height="4" fill="#22c55e" opacity="0.3"/>
+                <rect x="69" y="151" width="4" height="4" fill="#22c55e" opacity="0.3"/>
+                <rect x="63" y="157" width="4" height="4" fill="#22c55e" opacity="0.3"/>
+                <!-- Top indicator light -->
+                <circle cx="80" cy="38" r="3" fill="#22c55e" opacity="0.6"/>
+                <circle cx="80" cy="38" r="6" fill="#22c55e" opacity="0.1"/>
+                <!-- Logo area -->
+                <rect x="58" y="186" width="44" height="4" rx="2" fill="#22c55e" opacity="0.2"/>
+                <defs>
+                  <linearGradient id="screenGlow" x1="34" y1="46" x2="126" y2="114">
+                    <stop offset="0%" stop-color="#22c55e" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div class="konzept-flow">
+              <div class="flow-step">QR</div>
+              <div class="flow-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+              <div class="flow-step">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/></svg>
+              </div>
+              <div class="flow-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+              <div class="flow-step">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><rect x="6" y="14" width="12" height="8"/></svg>
+              </div>
+              <div class="flow-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+              <div class="flow-step">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+              </div>
+            </div>
+            <span class="konzept-visual-label">Self-Service Druckmodul</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- VORTEILE -->
+    <section class="vorteile" id="vorteile">
+      <div class="container">
+        <div class="vorteile-watermark" aria-hidden="true">04</div>
+        <p class="section-label fade-in">VORTEILE F&Uuml;R IHREN STANDORT</p>
+        <h2 class="section-headline fade-in">Warum PrintCase?</h2>
+        <div class="vorteile-grid">
+          <div class="benefit-card fade-in">
+            <div class="benefit-card-header">
+              <span class="benefit-number">01</span>
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+            </div>
+            <h3>Neue Frequenz &amp; Aufmerksamkeit</h3>
+            <p>Hohes Anziehungspotenzial f&uuml;r junge Zielgruppen und Familien.</p>
+          </div>
+          <div class="benefit-card fade-in">
+            <div class="benefit-card-header">
+              <span class="benefit-number">02</span>
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </div>
+            </div>
+            <h3>Kein Personalaufwand</h3>
+            <p>Vollst&auml;ndig automatisierter Betrieb &ndash; von der Gestaltung &uuml;ber die Produktion bis zur Ausgabe.</p>
+          </div>
+          <div class="benefit-card fade-in">
+            <div class="benefit-card-header">
+              <span class="benefit-number">03</span>
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              </div>
+            </div>
+            <h3>Keine Konkurrenz zu bestehenden Shops</h3>
+            <p>Erg&auml;nzendes Konzept mit eigenem Nutzen. Keine &Uuml;berschneidung mit bestehenden Mietern.</p>
+          </div>
+          <div class="benefit-card fade-in">
+            <div class="benefit-card-header">
+              <span class="benefit-number">04</span>
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              </div>
+            </div>
+            <h3>Minimaler Fl&auml;chenbedarf</h3>
+            <p>Nur ca. 1,5&ndash;2 m&sup2;. Ideal f&uuml;r S&auml;ulenbereiche und Randzonen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- PROZESS -->
+    <section class="prozess" id="prozess">
+      <div class="container">
+        <div class="prozess-header">
+          <p class="section-label fade-in">SO FUNKTIONIERT'S</p>
+          <h2 class="section-headline fade-in">In vier Schritten zur fertigen H&uuml;lle.</h2>
+        </div>
+        <div class="steps">
+          <div class="step fade-in">
+            <div class="step-number">01</div>
+            <div class="step-line"></div>
+            <div class="step-card-bg">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+              </div>
+              <h3>QR-Code scannen</h3>
+              <p>Am Modul scannen und Designoberfl&auml;che &ouml;ffnen.</p>
+            </div>
+          </div>
+          <div class="step fade-in">
+            <div class="step-number">02</div>
+            <div class="step-line"></div>
+            <div class="step-card-bg">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              </div>
+              <h3>Design gestalten</h3>
+              <p>Eigenes Motiv direkt am Smartphone erstellen.</p>
+            </div>
+          </div>
+          <div class="step fade-in">
+            <div class="step-number">03</div>
+            <div class="step-line"></div>
+            <div class="step-card-bg">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              </div>
+              <h3>Produktion starten</h3>
+              <p>Vollautomatischer Druck in wenigen Minuten.</p>
+            </div>
+          </div>
+          <div class="step fade-in">
+            <div class="step-number">04</div>
+            <div class="step-card-bg">
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div>
+              <h3>H&uuml;lle erhalten</h3>
+              <p>Bargeldlose Bezahlung, sofortige Ausgabe.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- TECHNIK -->
+    <section class="technik" id="technik">
+      <div class="container">
+        <div class="technik-header">
+          <p class="section-label fade-in">INTEGRATION &amp; BETRIEB</p>
+          <h2 class="section-headline fade-in">Einfach zu integrieren.</h2>
+          <p class="section-body fade-in">Konzipiert f&uuml;r den reibungslosen Betrieb im laufenden Centerbetrieb &ndash; mit minimalem Aufwand f&uuml;r das Center und maximaler Eigenst&auml;ndigkeit.</p>
+        </div>
+
+        <div class="technik-content">
+          <div class="accordion fade-in">
+            <div class="accordion-item">
+              <button class="accordion-trigger" aria-expanded="false">
+                <span>Infrastruktur</span>
+                <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-content-inner">Eigenst&auml;ndiger Betrieb ausschlie&szlig;lich w&auml;hrend der &Ouml;ffnungszeiten. Einzige Anforderung: ein Stromanschluss. Keine baulichen Ma&szlig;nahmen, kein Netzwerk, kein Wasserzulauf.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-trigger" aria-expanded="false">
+                <span>Sicherheit &amp; Compliance</span>
+                <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-content-inner">CE-konforme Anlage nach EU-Richtlinien. Platzierung in Abstimmung mit allen sicherheitsrelevanten Anforderungen. Betriebshaftpflicht wird abgeschlossen.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-trigger" aria-expanded="false">
+                <span>Datenschutz &amp; Nutzerf&uuml;hrung</span>
+                <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-content-inner">Gestaltung und Best&auml;tigung ausschlie&szlig;lich &uuml;ber das eigene Smartphone. Bilder werden w&auml;hrend des Druckvorgangs nicht am Bildschirm angezeigt. Kein &ouml;ffentlicher Touchscreen mit pers&ouml;nlichen Inhalten.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-trigger" aria-expanded="false">
+                <span>Erscheinungsbild</span>
+                <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-content-inner">Wird in Abstimmung mit dem Center entwickelt &ndash; zur&uuml;ckhaltend, modern und harmonisch ins architektonische Umfeld integriert.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="specs-grid fade-in">
+            <div class="spec-item">
+              <div class="spec-icon"><svg viewBox="0 0 24 24"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>
+              <div>
+                <div class="spec-label">Fl&auml;che</div>
+                <div class="spec-value">ca. 1,5&ndash;2 m&sup2;</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div>
+                <div class="spec-label">Betriebszeiten</div>
+                <div class="spec-value">&Ouml;ffnungszeiten</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+              <div>
+                <div class="spec-label">Infrastruktur</div>
+                <div class="spec-value">Stromanschluss</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div>
+                <div class="spec-label">L&auml;rm / Geruch</div>
+                <div class="spec-value">Keiner</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+              <div>
+                <div class="spec-label">Zahlung</div>
+                <div class="spec-value">Bargeldlos</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div>
+                <div class="spec-label">Zertifizierung</div>
+                <div class="spec-value">CE-konform</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- KONTAKT -->
+    <section class="kontakt" id="kontakt">
+      <div class="container">
+        <div class="kontakt-inner">
+          <p class="section-label fade-in">KONTAKT</p>
+          <h2 class="section-headline fade-in">Interesse geweckt?</h2>
+          <p class="section-body fade-in">Sprechen Sie uns an &ndash; wir informieren Sie gerne &uuml;ber die M&ouml;glichkeiten f&uuml;r Ihren Standort.</p>
+
+          <div class="kontakt-info fade-in">
+            <div class="kontakt-row">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Jora Daweschyan</span>
+            </div>
+            <div class="kontakt-row">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href="tel:+436605376878">+43 0660 5376878</a>
+            </div>
+            <div class="kontakt-row">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:jora.daw@gmail.com">jora.daw@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="kontakt-actions fade-in">
+            <a href="mailto:jora.daw@gmail.com" class="btn-primary">Kontakt aufnehmen
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M7 7h9.2v9.2"/></svg>
+            </a>
+            <a href="flyer.pdf" class="btn-secondary" download>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Flyer als PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo" aria-label="PrintCase Home">
+            <svg viewBox="0 0 315.86 80" height="80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="0" y="0" width="44" height="80" rx="9" fill="#22c55e"/>
+              <rect x="11" y="8" width="24" height="8" rx="4" fill="#f4f4f6" opacity="0.72"/>
+              <text style="font-family:'Bebas Neue',Impact,'Arial Black',sans-serif;font-size:82px" x="53.46" y="69.68"><tspan fill="#f4f4f6">PRINT</tspan><tspan fill="#f4f4f6">CASE</tspan></text>
+            </svg>
+          </a>
+          <p>Self-Service Handyh&uuml;llen-Druckmodul. Automatisierte Produktion individueller Handyh&uuml;llen direkt vor Ort.</p>
+        </div>
+        <div class="footer-nav">
+          <div class="footer-nav-title">Navigation</div>
+          <ul class="footer-nav-list">
+            <li><a href="#konzept">Konzept</a></li>
+            <li><a href="#vorteile">Vorteile</a></li>
+            <li><a href="#prozess">Prozess</a></li>
+            <li><a href="#technik">Technik</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav">
+          <div class="footer-nav-title">Rechtliches</div>
+          <ul class="footer-nav-list">
+            <li><a href="#impressum" class="overlay-trigger" data-overlay="impressum">Impressum</a></li>
+            <li><a href="#datenschutz" class="overlay-trigger" data-overlay="datenschutz">Datenschutz</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-inner">
+        <div class="footer-links">
+          <button class="overlay-trigger" data-overlay="impressum">Impressum</button>
+          <button class="overlay-trigger" data-overlay="datenschutz">Datenschutz</button>
+        </div>
+        <span class="footer-copy">&copy; 2025 PrintCase</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCROLL TO TOP -->
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Nach oben scrollen">
+    <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <script>
+    (function() {
+      // Mobile Menu
+      var hamburger = document.getElementById('hamburger');
+      var mobileMenu = document.getElementById('mobileMenu');
+      var mobileLinks = mobileMenu.querySelectorAll('a');
+
+      hamburger.addEventListener('click', function() {
+        var isOpen = mobileMenu.classList.toggle('open');
+        hamburger.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+
+      mobileLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.remove('open');
+          hamburger.classList.remove('active');
+          hamburger.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        });
+      });
+
+      // Accordion
+      var triggers = document.querySelectorAll('.accordion-trigger');
+      triggers.forEach(function(trigger) {
+        trigger.addEventListener('click', function() {
+          var item = this.parentElement;
+          var content = item.querySelector('.accordion-content');
+          var isOpen = item.classList.contains('open');
+
+          document.querySelectorAll('.accordion-item').forEach(function(i) {
+            i.classList.remove('open');
+            i.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+            i.querySelector('.accordion-content').style.maxHeight = null;
+          });
+
+          if (!isOpen) {
+            item.classList.add('open');
+            this.setAttribute('aria-expanded', 'true');
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }
+        });
+      });
+
+      // Fade-in on scroll
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReducedMotion) {
+        var fadeEls = document.querySelectorAll('.fade-in');
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        fadeEls.forEach(function(el) { observer.observe(el); });
+      } else {
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+          el.classList.add('visible');
+        });
+      }
+
+      // Navbar scroll effect
+      var navbar = document.getElementById('navbar');
+      var scrollTopBtn = document.getElementById('scrollTopBtn');
+
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+          navbar.style.background = 'rgba(10, 10, 10, 0.92)';
+        } else {
+          navbar.style.background = 'rgba(10, 10, 10, 0.7)';
+        }
+
+        // Scroll to top button
+        if (window.scrollY > 600) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+      }, { passive: true });
+
+      // Scroll to top
+      scrollTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // --- OVERLAY SYSTEM ---
+      var backdrop = document.getElementById('overlayBackdrop');
+      var impressumOverlay = document.getElementById('impressumOverlay');
+      var datenschutzOverlay = document.getElementById('datenschutzOverlay');
+      var impressumClose = document.getElementById('impressumClose');
+      var datenschutzClose = document.getElementById('datenschutzClose');
+
+      var overlays = {
+        impressum: impressumOverlay,
+        datenschutz: datenschutzOverlay
+      };
+
+      var currentOverlay = null;
+
+      function openOverlay(name) {
+        var panel = overlays[name];
+        if (!panel) return;
+
+        currentOverlay = name;
+        backdrop.classList.add('active');
+        panel.classList.add('active');
+        document.body.classList.add('overlay-open');
+
+        // Update URL hash without scrolling
+        history.pushState(null, '', '#' + name);
+
+        // Focus the close button
+        var closeBtn = panel.querySelector('.overlay-close');
+        if (closeBtn) {
+          setTimeout(function() { closeBtn.focus(); }, 400);
+        }
+      }
+
+      function closeOverlay() {
+        if (!currentOverlay) return;
+
+        var panel = overlays[currentOverlay];
+        backdrop.classList.remove('active');
+        panel.classList.remove('active');
+        document.body.classList.remove('overlay-open');
+
+        // Reset scroll position inside overlay
+        var body = panel.querySelector('.overlay-body');
+        if (body) body.scrollTop = 0;
+
+        // Restore hash to empty or remove
+        history.pushState(null, '', window.location.pathname + window.location.search);
+
+        currentOverlay = null;
+      }
+
+      // Trigger buttons/links
+      document.querySelectorAll('.overlay-trigger').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault();
+          var name = this.getAttribute('data-overlay') || this.getAttribute('href').replace('#', '');
+          openOverlay(name);
+        });
+      });
+
+      // Close buttons
+      impressumClose.addEventListener('click', closeOverlay);
+      datenschutzClose.addEventListener('click', closeOverlay);
+
+      // Backdrop click closes
+      backdrop.addEventListener('click', closeOverlay);
+
+      // Escape key closes
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && currentOverlay) {
+          closeOverlay();
+        }
+      });
+
+      // Check hash on load
+      var initHash = window.location.hash.replace('#', '');
+      if (initHash === 'impressum' || initHash === 'datenschutz') {
+        // Slight delay so CSS transitions play
+        setTimeout(function() { openOverlay(initHash); }, 100);
+      }
+
+      // Handle browser back/forward
+      window.addEventListener('popstate', function() {
+        var hash = window.location.hash.replace('#', '');
+        if (hash === 'impressum' || hash === 'datenschutz') {
+          if (currentOverlay !== hash) {
+            // Close current if different, then open new
+            if (currentOverlay) {
+              var panel = overlays[currentOverlay];
+              backdrop.classList.remove('active');
+              panel.classList.remove('active');
+              document.body.classList.remove('overlay-open');
+              var body = panel.querySelector('.overlay-body');
+              if (body) body.scrollTop = 0;
+              currentOverlay = null;
+            }
+            openOverlay(hash);
+          }
+        } else {
+          if (currentOverlay) {
+            var panel = overlays[currentOverlay];
+            backdrop.classList.remove('active');
+            panel.classList.remove('active');
+            document.body.classList.remove('overlay-open');
+            var body = panel.querySelector('.overlay-body');
+            if (body) body.scrollTop = 0;
+            currentOverlay = null;
+          }
+        }
+      });
+
+      // Navbar logo closes overlay too
+      document.querySelectorAll('.navbar-logo, .footer-logo').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+          if (currentOverlay) {
+            e.preventDefault();
+            closeOverlay();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+      });
+
+    })();
+  </script>
+</body>
+</html>
