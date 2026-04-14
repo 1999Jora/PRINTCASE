@@ -1,5 +1,6 @@
 FROM nginx:alpine
 COPY index.html /usr/share/nginx/html/index.html
+COPY flyer.pdf /usr/share/nginx/html/flyer.pdf
 COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 RUN rm /etc/nginx/conf.d/default.conf
 EXPOSE 80
