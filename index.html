@@ -2339,9 +2339,12 @@
         // Fallback: scroll listener checks element positions
         function checkFadeIns() {
           var remaining = document.querySelectorAll('.fade-in:not(.visible)');
+          var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+          var viewH = window.innerHeight;
           remaining.forEach(function(el) {
             var rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight + 60 && rect.bottom > 0) {
+            // Element is in or above viewport = should be visible
+            if (rect.top < viewH + 60) {
               el.classList.add('visible');
             }
           });
