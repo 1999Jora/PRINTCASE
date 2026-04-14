@@ -300,18 +300,6 @@
     @media (max-width: 768px) {
       .navbar-links { display: none; }
       .hamburger { display: flex; }
-
-      .hero {
-        padding-top: 80px;
-        padding-bottom: 40px;
-      }
-      .hero-headline {
-        font-size: clamp(2.5rem, 8vw, 6.5rem);
-      }
-      .hero-badge {
-        flex-wrap: wrap;
-        max-width: 100%;
-      }
     }
 
     /* --- HERO --- */
@@ -324,6 +312,235 @@
       padding-bottom: 60px;
       position: relative;
       overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-phone-group {
+      position: relative;
+      width: 320px;
+      height: 420px;
+    }
+
+    .hero-phone {
+      position: absolute;
+      width: 200px;
+      height: 400px;
+      border-radius: 32px;
+      border: 2px solid var(--border);
+      background: linear-gradient(160deg, #141414 0%, #0a0a0a 100%);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(34, 197, 94, 0.06);
+      overflow: hidden;
+    }
+
+    .hero-phone::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 20px;
+      background: #0a0a0a;
+      border-radius: 12px;
+      z-index: 2;
+    }
+
+    .hero-phone-screen {
+      position: absolute;
+      top: 36px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    /* Back phone - the "case" */
+    .hero-phone.phone-back {
+      left: 0;
+      top: 20px;
+      transform: rotate(-6deg);
+      z-index: 1;
+    }
+
+    .hero-phone.phone-back .hero-phone-screen {
+      background: linear-gradient(135deg, #1a1a1a 0%, #111 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .phone-case-preview {
+      width: 120px;
+      height: 200px;
+      border-radius: 20px;
+      border: 2px solid rgba(34, 197, 94, 0.3);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(34, 197, 94, 0.02) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-case-preview svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1;
+      opacity: 0.5;
+    }
+
+    .phone-case-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    /* Front phone - the "design interface" */
+    .hero-phone.phone-front {
+      right: 0;
+      top: 0;
+      z-index: 2;
+      transform: rotate(3deg);
+    }
+
+    .hero-phone.phone-front .hero-phone-screen {
+      background: linear-gradient(180deg, #111 0%, #0d0d0d 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    .phone-ui-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .phone-ui-bar-title {
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+
+    .phone-ui-bar-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .phone-ui-canvas {
+      flex: 1;
+      border-radius: 12px;
+      border: 1px dashed rgba(34, 197, 94, 0.25);
+      background: rgba(34, 197, 94, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .phone-ui-canvas svg {
+      width: 36px;
+      height: 36px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1;
+      opacity: 0.4;
+    }
+
+    .phone-ui-btn {
+      background: var(--accent);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.5rem;
+      font-weight: 600;
+      color: var(--bg);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Floating glow behind phones */
+    .hero-phone-glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(30px);
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .hero-visual {
+        justify-content: flex-start;
+      }
+      .hero-phone-group {
+        width: 260px;
+        height: 340px;
+      }
+      .hero-phone {
+        width: 160px;
+        height: 320px;
+        border-radius: 26px;
+      }
+      .hero-phone::before {
+        width: 48px;
+        height: 16px;
+      }
+      .hero-phone-screen {
+        top: 28px;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        border-radius: 16px;
+      }
+      .phone-case-preview {
+        width: 90px;
+        height: 150px;
+        border-radius: 16px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-visual {
+        display: none;
+      }
     }
 
     /* Dot grid pattern */
@@ -1555,17 +1772,48 @@
     <section class="hero" id="hero">
       <div class="hero-orb"></div>
       <div class="container">
-        <div class="hero-badge fade-in">
-          <span class="hero-badge-dot"></span>
-          Jetzt verf&uuml;gbar f&uuml;r Standortpartner
-        </div>
-        <p class="hero-label fade-in">SELF-SERVICE &middot; HANDYH&Uuml;LLEN-DRUCKMODUL</p>
-        <h1 class="hero-headline fade-in">MEHR ERLEBNIS<br>F&Uuml;R IHREN STANDORT.</h1>
-        <p class="hero-sub fade-in">Ein automatisiertes Modul f&uuml;r individuelle Handyh&uuml;llen &ndash; direkt vor Ort produziert, auf minimaler Fl&auml;che, ohne Personalaufwand.</p>
-        <div class="hero-actions fade-in">
-          <a href="#konzept" class="btn-primary">Mehr erfahren
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M7 7h9.2v9.2"/></svg>
-          </a>
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-badge fade-in">
+              <span class="hero-badge-dot"></span>
+              Jetzt verf&uuml;gbar f&uuml;r Standortpartner
+            </div>
+            <p class="hero-label fade-in">SELF-SERVICE &middot; HANDYH&Uuml;LLEN-DRUCKMODUL</p>
+            <h1 class="hero-headline fade-in">MEHR ERLEBNIS<br>F&Uuml;R IHREN STANDORT.</h1>
+            <p class="hero-sub fade-in">Ein automatisiertes Modul f&uuml;r individuelle Handyh&uuml;llen &ndash; direkt vor Ort produziert, auf minimaler Fl&auml;che, ohne Personalaufwand.</p>
+            <div class="hero-actions fade-in">
+              <a href="#konzept" class="btn-primary">Mehr erfahren
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M7 7h9.2v9.2"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="hero-visual fade-in">
+            <div class="hero-phone-group">
+              <div class="hero-phone-glow"></div>
+              <!-- Back phone: case preview -->
+              <div class="hero-phone phone-back">
+                <div class="hero-phone-screen">
+                  <div class="phone-case-preview">
+                    <svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+                  </div>
+                  <span class="phone-case-label">Vorschau</span>
+                </div>
+              </div>
+              <!-- Front phone: design interface -->
+              <div class="hero-phone phone-front">
+                <div class="hero-phone-screen">
+                  <div class="phone-ui-bar">
+                    <span class="phone-ui-bar-title">Design</span>
+                    <span class="phone-ui-bar-dot"></span>
+                  </div>
+                  <div class="phone-ui-canvas">
+                    <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+                  </div>
+                  <div class="phone-ui-btn">Drucken starten</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="hero-divider fade-in"></div>
       </div>
