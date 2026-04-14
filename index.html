@@ -209,6 +209,7 @@
       align-items: center;
       justify-content: space-between;
       height: 60px;
+      position: relative;
     }
 
     .navbar-logo svg {
@@ -222,6 +223,49 @@
       align-items: center;
       gap: 32px;
       list-style: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .navbar-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .navbar-cta:hover {
+      background: var(--accent-hover);
+    }
+
+    .navbar-cta svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media (max-width: 960px) {
+      .navbar-links {
+        position: static;
+        transform: none;
+      }
+      .navbar-cta { display: none; }
     }
 
     .navbar-links a {
@@ -1670,6 +1714,9 @@
           <li><a href="#kontakt">Kontakt</a></li>
         </ul>
       </nav>
+      <a href="#kontakt" class="navbar-cta">Kontakt
+        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
       <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
         <span></span>
         <span></span>
