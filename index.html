@@ -212,10 +212,27 @@
       position: relative;
     }
 
-    .navbar-logo svg {
-      height: 30px;
-      width: auto;
-      display: block;
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .navbar-logo-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .navbar-logo-text {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      line-height: 1;
+      white-space: nowrap;
     }
 
     .navbar-links {
@@ -235,15 +252,17 @@
       background: var(--accent);
       color: var(--bg);
       font-family: var(--font-body);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      padding: 8px 20px;
+      padding: 9px 20px;
       border: none;
       border-radius: 50px;
       cursor: pointer;
       text-decoration: none;
       transition: background 0.2s ease;
       white-space: nowrap;
+      line-height: 1;
+      letter-spacing: 0.01em;
     }
 
     .navbar-cta:hover {
@@ -270,12 +289,13 @@
 
     .navbar-links a {
       font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-weight: 500;
+      font-size: 0.82rem;
+      font-weight: 400;
       color: var(--text-muted);
       text-decoration: none;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       transition: color 0.2s ease;
+      line-height: 1;
     }
 
     .navbar-links a:hover,
@@ -1405,10 +1425,25 @@
       gap: 16px;
     }
 
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
     .footer-logo svg {
-      height: 22px;
-      width: auto;
-      display: block;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .footer-logo-text {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      line-height: 1;
     }
 
     .footer-links {
@@ -1699,11 +1734,11 @@
   <header class="navbar" id="navbar">
     <div class="navbar-inner">
       <a href="#" class="navbar-logo" aria-label="PrintCase Home">
-        <svg viewBox="0 0 315.86 80" height="80" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="44" height="80" rx="9" fill="#22c55e"/>
+        <svg class="navbar-logo-icon" viewBox="0 0 44 80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="80" rx="9" fill="#22c55e"/>
           <rect x="11" y="8" width="24" height="8" rx="4" fill="#f4f4f6" opacity="0.72"/>
-          <text style="font-family:'Bebas Neue',Impact,'Arial Black',sans-serif;font-size:82px" x="53.46" y="69.68"><tspan fill="#f4f4f6">PRINT</tspan><tspan fill="#f4f4f6">CASE</tspan></text>
         </svg>
+        <span class="navbar-logo-text">PRINTCASE</span>
       </a>
       <nav>
         <ul class="navbar-links">
@@ -2190,11 +2225,11 @@
       <div class="footer-top">
         <div class="footer-brand">
           <a href="#" class="footer-logo" aria-label="PrintCase Home">
-            <svg viewBox="0 0 315.86 80" height="80" xmlns="http://www.w3.org/2000/svg">
-              <rect x="0" y="0" width="44" height="80" rx="9" fill="#22c55e"/>
+            <svg viewBox="0 0 44 80" xmlns="http://www.w3.org/2000/svg">
+              <rect width="44" height="80" rx="9" fill="#22c55e"/>
               <rect x="11" y="8" width="24" height="8" rx="4" fill="#f4f4f6" opacity="0.72"/>
-              <text style="font-family:'Bebas Neue',Impact,'Arial Black',sans-serif;font-size:82px" x="53.46" y="69.68"><tspan fill="#f4f4f6">PRINT</tspan><tspan fill="#f4f4f6">CASE</tspan></text>
             </svg>
+            <span class="footer-logo-text">PRINTCASE</span>
           </a>
           <p>Self-Service Handyh&uuml;llen-Druckmodul. Automatisierte Produktion individueller Handyh&uuml;llen direkt vor Ort.</p>
         </div>
