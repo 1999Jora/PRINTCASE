@@ -106,6 +106,7 @@
 
     .section-headline {
       font-family: var(--font-display);
+      font-size: 3rem;
       font-size: clamp(2.2rem, 5vw, 3.5rem);
       letter-spacing: 0.02em;
       line-height: 1.1;
@@ -243,7 +244,11 @@
       background: none;
       border: none;
       cursor: pointer;
-      padding: 4px;
+      padding: 11px;
+      min-width: 44px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
     }
 
     .hamburger span {
@@ -284,6 +289,10 @@
       text-decoration: none;
       letter-spacing: 0.05em;
       transition: color 0.2s ease;
+      padding: 8px 16px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
     }
 
     .mobile-menu a:hover { color: var(--accent); }
@@ -291,6 +300,18 @@
     @media (max-width: 768px) {
       .navbar-links { display: none; }
       .hamburger { display: flex; }
+
+      .hero {
+        padding-top: 80px;
+        padding-bottom: 40px;
+      }
+      .hero-headline {
+        font-size: clamp(2.5rem, 8vw, 6.5rem);
+      }
+      .hero-badge {
+        flex-wrap: wrap;
+        max-width: 100%;
+      }
     }
 
     /* --- HERO --- */
@@ -397,6 +418,7 @@
 
     .hero-headline {
       font-family: var(--font-display);
+      font-size: 5rem;
       font-size: clamp(3rem, 8vw, 6.5rem);
       line-height: 0.95;
       letter-spacing: 0.01em;
@@ -605,7 +627,7 @@
 
     .benefit-card-header {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 16px;
       margin-bottom: 16px;
     }
@@ -617,7 +639,6 @@
       letter-spacing: 0.02em;
       line-height: 1;
       flex-shrink: 0;
-      margin-top: 2px;
     }
 
     .benefit-icon {
@@ -702,7 +723,7 @@
 
     .step-line {
       position: absolute;
-      top: 24px;
+      top: 23px;
       left: calc(50% + 30px);
       right: calc(-50% + 30px);
       height: 2px;
@@ -721,7 +742,8 @@
       border-radius: 50%;
       border: 2px solid var(--accent);
       font-family: var(--font-display);
-      font-size: 1.2rem;
+      font-size: 1.3rem;
+      line-height: 1;
       color: var(--accent);
       position: relative;
       z-index: 1;
@@ -739,6 +761,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 44px;
+      height: 44px;
       margin: 0 auto 16px;
     }
 
@@ -772,23 +796,23 @@
         grid-template-columns: 1fr;
         gap: 48px;
       }
-      .step { text-align: left; padding: 0; padding-left: 72px; }
+      .step { text-align: left; padding: 0; padding-left: 72px; position: relative; }
       .step-card-bg {
         margin-top: 0;
-        padding: 20px 16px;
+        padding: 24px 20px;
       }
       .step-number {
         position: absolute;
         left: 0;
-        top: 0;
+        top: 12px;
       }
       .step-line {
-        top: 48px;
-        left: 24px;
+        top: 60px;
+        left: 23px;
         right: auto;
         width: 2px;
         height: calc(100% + 48px);
-        bottom: 0;
+        bottom: auto;
         background: linear-gradient(to bottom, var(--accent), rgba(34, 197, 94, 0.1));
       }
       .step:last-child .step-line { display: none; }
@@ -835,6 +859,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 24px 0;
+      min-height: 48px;
       background: none;
       border: none;
       cursor: pointer;
@@ -890,7 +915,7 @@
       padding: 24px;
       display: flex;
       gap: 14px;
-      align-items: flex-start;
+      align-items: center;
       transition: border-color 0.3s ease;
     }
 
@@ -1044,6 +1069,20 @@
 
     @media (max-width: 768px) {
       .kontakt { padding: var(--section-py-mobile) 0; }
+      .kontakt-info {
+        padding: 24px 20px;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+      .kontakt-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .kontakt .btn-primary,
+      .kontakt .btn-secondary {
+        justify-content: center;
+        text-align: center;
+      }
     }
 
     /* --- FOOTER --- */
@@ -1141,6 +1180,61 @@
 
     @media (max-width: 600px) {
       .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* --- VERY SMALL SCREENS (< 400px) --- */
+    @media (max-width: 400px) {
+      .container {
+        padding: 0 16px;
+      }
+      .hero-headline {
+        font-size: clamp(2rem, 10vw, 3rem);
+      }
+      .hero-badge {
+        font-size: 0.7rem;
+        padding: 6px 14px;
+      }
+      .benefit-card {
+        padding: 28px 20px;
+      }
+      .kontakt-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .kontakt .btn-primary,
+      .download-link {
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+      }
+      .footer-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .footer-links a,
+      .footer-links button {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+      .footer-nav-list a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+      .step {
+        padding-left: 60px;
+      }
+      .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+      .step-line {
+        left: 19px;
+        top: 52px;
+      }
     }
 
     /* --- OVERLAY PANELS (Impressum/Datenschutz) --- */
