@@ -2321,16 +2321,36 @@
 
       if (!prefersReducedMotion) {
         var fadeEls = document.querySelectorAll('.fade-in');
-        var observer = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
+
+        // Primary: IntersectionObserver
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0, rootMargin: '0px 0px 60px 0px' });
+
+          fadeEls.forEach(function(el) { observer.observe(el); });
+        }
+
+        // Fallback: scroll listener checks element positions
+        function checkFadeIns() {
+          var remaining = document.querySelectorAll('.fade-in:not(.visible)');
+          remaining.forEach(function(el) {
+            var rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight + 60 && rect.bottom > 0) {
+              el.classList.add('visible');
             }
           });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-        fadeEls.forEach(function(el) { observer.observe(el); });
+        }
+        window.addEventListener('scroll', checkFadeIns, { passive: true });
+        // Also check on load and after short delay
+        checkFadeIns();
+        setTimeout(checkFadeIns, 500);
+        setTimeout(checkFadeIns, 1500);
       } else {
         document.querySelectorAll('.fade-in').forEach(function(el) {
           el.classList.add('visible');
