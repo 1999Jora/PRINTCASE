@@ -2,6 +2,7 @@ FROM nginx:alpine
 COPY index.html /usr/share/nginx/html/index.html
 COPY flyer.pdf /usr/share/nginx/html/flyer.pdf
 COPY machine-front.webp /usr/share/nginx/html/machine-front.webp
+COPY favicon.png /usr/share/nginx/html/favicon.png
 COPY machine-angle.webp /usr/share/nginx/html/machine-angle.webp
 COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 RUN rm /etc/nginx/conf.d/default.conf
